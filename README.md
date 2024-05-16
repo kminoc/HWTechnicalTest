@@ -22,9 +22,9 @@ Une fois l'application démarrée, un background service récupère les Offres d
 - Swagger
 
 ## Améliorations
-- Gestion des erreurs
-- Gestion des logs
-- Gestion de la pagination
+- Améliorer la gestion des erreurs
+- Améliorer la gestion des logs
+- Améliorer la pagination
 - Gestion du cache
 - Tests unitaires
 
