@@ -13,7 +13,7 @@ namespace HWTechnicalTest.FTApi
     public class FTAPIClient
     {
         const int MIN_API_CALL_INTERVAL = 3000; // 3 second
-        const int API_SEARCH_COUNT = 50;
+        const int API_SEARCH_COUNT = 150;
 
         private FTAccessToken _token;
 
@@ -21,12 +21,15 @@ namespace HWTechnicalTest.FTApi
 
         private readonly IOptions<FTApiSettings> _settings;
         private readonly IDBOffersService _dbService;
+        private readonly ILogger<FTAPIClient> _logger;
+
         private System.Runtime.Caching.MemoryCache _memoryCache = System.Runtime.Caching.MemoryCache.Default;
 
-        public FTAPIClient(IOptions<FTApiSettings> settings, IDBOffersService dbService)
+        public FTAPIClient(ILogger<FTAPIClient> logger,IOptions<FTApiSettings> settings, IDBOffersService dbService)
         {
             _settings = settings;
             _dbService = dbService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -76,7 +79,6 @@ namespace HWTechnicalTest.FTApi
 
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_token?.access_token}");
 
-            Console.WriteLine($"{_settings.Value.ApiUrl}{apiParameters.ToString()}");
             try
             {
                 using HttpResponseMessage response = await client.GetAsync($"{_settings.Value.ApiUrl}{apiParameters.ToString()}");
@@ -93,7 +95,7 @@ namespace HWTechnicalTest.FTApi
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _logger.LogError(e.Message);
                 return null;
             }
 
@@ -113,7 +115,10 @@ namespace HWTechnicalTest.FTApi
             {
                 try
                 {
+                    //TODO: manage offset to get all offers (error 500 if offset too high)
+
                     int offset = 0;
+                    int total = 0;
 
                     //JobOffer mostRecent = await _dbService.GetLocationMostRecentAsync(location);
 
@@ -137,10 +142,13 @@ namespace HWTechnicalTest.FTApi
                         if (offers == null)
                             break;
 
+                        _logger.LogInformation($"Retrieved {offers.Count} offers for location {location} with offset {offset}");
+
                         foreach (var o in offers)
                         {
                             if (!await OfferAlreadySynced(o.Id)) // add it to the db if non existent
                             {
+                                total++;
                                 await _dbService.CreateAsync(o);
                                 AddToCache(o.Id); // add offer id to cache
                             }
@@ -148,10 +156,12 @@ namespace HWTechnicalTest.FTApi
 
                         offset += API_SEARCH_COUNT;
                     }
+
+                    _logger.LogInformation($"Added {total} new offers for location {location}");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    _logger.LogError(e.Message);
                 }
 
             }
@@ -180,7 +190,7 @@ namespace HWTechnicalTest.FTApi
         private void AddToCache(string id)
         {
             if (_memoryCache.Contains(id)) return;
-            _memoryCache.Add(id, true, DateTimeOffset.Now.AddHours(1));
+            _memoryCache.Add(id, true, DateTimeOffset.Now.AddHours(24));
         }
 
         private async Task PreventApiFlooding()

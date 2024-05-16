@@ -3,7 +3,7 @@
     public interface IDBOffersService
     {
         public string DBType { get; }
-        public Task<List<JobOffer>> GetAsync();
+        public Task<List<JobOffer>> GetAsync(int offset,int page_size);
         public Task<JobOffer?> GetAsync(string id);
         public Task CreateAsync(JobOffer newOffer);
         public Task UpdateAsync(string id, JobOffer updatedOffer);

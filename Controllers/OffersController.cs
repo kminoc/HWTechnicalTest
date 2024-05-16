@@ -14,10 +14,17 @@ namespace HWTechnicalTest.Controllers
             _offersService = offersService;
         }
 
+        /// <summary>
+        /// Get offers from local DB
+        /// </summary>
+        /// <param name="offset">wanted offset (start 0)</param>
+        /// <param name="page_size">wanted page size (max 150)</param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(int offset = 0,int page_size = 50)
         {
-            List<JobOffer> offers = await _offersService.GetAsync();
+            page_size = Math.Min(page_size, 150);
+            List<JobOffer> offers = await _offersService.GetAsync(offset,page_size);
             return Ok(offers);
         }
 
@@ -36,9 +43,16 @@ namespace HWTechnicalTest.Controllers
         }
 
         [HttpGet("overview")]
-        public async Task<IActionResult> Overview()
+        public async Task<IActionResult> Overview(int offset = 0,int page_size = 50)
         {
-            List<JobOffer> offers = await _offersService.GetAsync();
+            /// <summary>
+            /// Get offers from local DB
+            /// </summary>
+            /// <param name="offset">wanted offset (start 0)</param>
+            /// <param name="page_size">wanted page size (max 150)</param>
+            /// <returns></returns>
+            page_size = Math.Min(page_size, 150);
+            List<JobOffer> offers = await _offersService.GetAsync(offset,page_size);
             return Ok(offers.Select(o => new { o.Intitule, o.OrigineOffre?.UrlOrigine, o.DateCreation, Ville = o.LieuTravail?.Libelle,o.TypeContratLibelle }));
         }
     }

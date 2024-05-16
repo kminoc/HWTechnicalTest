@@ -17,8 +17,9 @@ namespace HWTechnicalTest.Services
             _offersCollection = mongoDatabase.GetCollection<JobOffer>(DBSettings.Value.CollectionName);
         }
         public string DBType => "MONGODB";
-        public async Task<List<JobOffer>> GetAsync() =>        
-           await _offersCollection.Find(_ => true).ToListAsync();
+        
+        public async Task<List<JobOffer>> GetAsync(int offset,int page_size) =>        
+           await _offersCollection.Find(_ => true).SortBy(o=>o.DateCreation).Skip(offset).Limit(page_size).ToListAsync();
         
         public async Task<JobOffer?> GetAsync(string id)=>        
             await _offersCollection.Find(x => x.Id.Equals(id)).FirstOrDefaultAsync();

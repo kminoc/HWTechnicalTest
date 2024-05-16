@@ -8,10 +8,12 @@ namespace HWTechnicalTest.Services
         const int interval = 5;
 
         private readonly FTAPIClient _ftApiClient;
+        private readonly ILogger<OffersUpdateBackgroundService> _logger;
 
-        public OffersUpdateBackgroundService(FTAPIClient ftApiClient)
+        public OffersUpdateBackgroundService(ILogger<OffersUpdateBackgroundService> logger,FTAPIClient ftApiClient)
         {
             _ftApiClient = ftApiClient;
+            _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -24,7 +26,7 @@ namespace HWTechnicalTest.Services
                 }
                 catch (Exception ex)
                 {
-                    //TODO: Log the exception
+                    _logger.LogError(ex.Message);
                 }
                 finally
                 {
