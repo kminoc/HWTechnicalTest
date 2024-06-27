@@ -4,7 +4,7 @@ Test Technique pour Hellowork
 
 ## A propos
 Le projet est une WebAPI .net 8. 
-Une fois l'application démarrée, un background service récupère les Offres d'emplois via l'[api France Travail](https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search) et stock les stock dans une base de donnée Mongo.
+Une fois l'application démarrée, un background service récupère les Offres d'emplois via l'[api France Travail](https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search) et les stock dans une base de donnée Mongo.
 
 ## API endpoints
 - [GET] /Offers : récupère toutes les offres dans la collection Mongo
