@@ -1,4 +1,5 @@
 ﻿using HWTechnicalTest.Interfaces;
+using HWTechnicalTest.Model;
 using HWTechnicalTest.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;

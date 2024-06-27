@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace HWTechnicalTest
+namespace HWTechnicalTest.Model
 {
     public class OfferLocation
     {

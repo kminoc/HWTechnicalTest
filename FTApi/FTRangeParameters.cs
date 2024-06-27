@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ZstdSharp.Unsafe;
 
 namespace HWTechnicalTest.FTApi
 {

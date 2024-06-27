@@ -1,4 +1,5 @@
 ﻿using HWTechnicalTest.Interfaces;
+using HWTechnicalTest.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

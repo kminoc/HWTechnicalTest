@@ -1,4 +1,6 @@
-﻿namespace HWTechnicalTest.Interfaces
+﻿using HWTechnicalTest.Model;
+
+namespace HWTechnicalTest.Interfaces
 {
     public interface IDBOffersService
     {

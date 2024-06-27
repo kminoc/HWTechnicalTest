@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using System.Text.Json.Serialization;
 
-namespace HWTechnicalTest
+namespace HWTechnicalTest.Model
 {
     public class JobOffer
     {

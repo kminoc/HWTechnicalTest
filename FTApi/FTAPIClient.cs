@@ -1,12 +1,8 @@
 ﻿using HWTechnicalTest.Settings;
 using Microsoft.Extensions.Options;
-using System.Net.Http;
 using System.Text.Json;
-using System.Text;
-using Amazon.Runtime.Internal.Endpoints.StandardLibrary;
-using System.Collections.Generic;
 using HWTechnicalTest.Interfaces;
-using System.Linq.Expressions;
+using HWTechnicalTest.Model;
 
 namespace HWTechnicalTest.FTApi
 {
